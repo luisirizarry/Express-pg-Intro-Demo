@@ -1,17 +1,17 @@
+/** Database setup for users. */
+
 const { Client } = require("pg");
+require("dotenv").config(); // Load environment variables from .env
 
-let DB_URI;
+// Determine the database URI based on the environment
+let DB_URI =
+  process.env.NODE_ENV === "test"
+    ? process.env.DB_URI_TEST
+    : process.env.DB_URI;
 
-// If we're running in test "mode", use our test db
-// Make sure to create both databases!
-if (process.env.NODE_ENV === "test") {
-  DB_URI = "postgresql:///usersdb_test";
-} else {
-  DB_URI = "postgresql:///usersdb";
-}
-
+// Set up the database client
 let db = new Client({
-  connectionString: DB_URI
+  connectionString: DB_URI,
 });
 
 db.connect();
